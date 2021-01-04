@@ -1,0 +1,84 @@
+swagger: "2.0"
+info:
+  description: "This is an API from the task8"
+  version: "0.0.1"
+  title: "Task8"
+host: "localhost:5000"
+basePath: "/api/v1"
+schemes:
+- "http"
+
+paths:
+  /drivers/{driver_id}:
+    get:
+      summary: Get a user by ID
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - $ref: '#/components/parameters/format'
+        - name: driver_id
+          in: path
+          required: true
+          description: An ID of required driver
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/components/schemas/Driver'
+        204:
+          description: No driver with drive_id={driver_id}
+
+  /drivers:
+    get:
+      summary: Get a list of drivers
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - $ref: '#/components/parameters/format'
+        - name: sort
+          in: query
+          description: ?sort=name for sorting by name, else by time
+          type: string
+        - name: order
+          in: query
+          description: ?order=desc for descending order, else ascending
+          type: string
+      responses:
+        200:
+          description: A list of drivers.
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Driver'
+
+
+components:
+  schemas:
+    Driver:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Driver's id.
+        name:
+          type: string
+          description: Driver's full name
+        team:
+          type: string
+          description: Driver's team
+        time:
+          type: string
+          description: Driver's best time
+  parameters:
+    format:
+      in: query
+      name: format
+      required: false
+      schema:
+        type: string
+      description: Response format, can be xml or json
+
+
